@@ -1,4 +1,5 @@
 import type { AlbumChapter } from '../../lib/album'
+import { useLang } from '../../lib/i18n'
 import { Lines } from '../../components/Lines'
 import { Reveal } from '../../components/Reveal'
 import { SpreadView } from './Spreads'
@@ -11,6 +12,7 @@ const ALIGN = ['start', 'end', 'center'] as const
  * el número y un título grande, y enseguida deja paso a las fotografías.
  */
 export function Chapter({ chapter, position, total }: { chapter: AlbumChapter; position: number; total: number }) {
+  const { t } = useLang()
   const align = ALIGN[position % ALIGN.length]
   const titleId = `capitulo-${chapter.id}-titulo`
 
@@ -25,7 +27,7 @@ export function Chapter({ chapter, position, total }: { chapter: AlbumChapter; p
         className={styles.opener}
         data-align={align}
         data-chapter-opener=""
-        data-chapter-title={chapter.title}
+        data-chapter={chapter.id}
         data-story-start={chapter.photos[0].storyNumber}
       >
         <Reveal kind="soft" className={styles.thread}>
@@ -34,7 +36,7 @@ export function Chapter({ chapter, position, total }: { chapter: AlbumChapter; p
         <Reveal as="p" className={styles.kicker}>
           <span className={styles.number}>{chapter.number}</span>
           <span className={styles.rule} aria-hidden="true" />
-          <span className="label">Capítulo</span>
+          <span className="label">{t.ui.chapter}</span>
         </Reveal>
         <Lines as="h2" id={titleId} className={`display ${styles.title}`} lines={[chapter.title]} delay={120} />
         <Reveal as="p" className={styles.lede} delay={360}>

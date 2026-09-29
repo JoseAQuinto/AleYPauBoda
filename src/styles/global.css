@@ -304,12 +304,14 @@ button {
 }
 
 /* Líneas de texto que suben desde una máscara. Si una no cabe en pantallas
-   estrechas, se parte en dos mitades equilibradas (nunca una palabra huérfana). */
+   estrechas, se parte en dos mitades equilibradas (nunca una palabra huérfana).
+   La máscara se ensancha a los lados (padding + margen negativo, el texto no se
+   mueve) para no recortar los rasgos de la cursiva, como la cola de una «y» final. */
 .line {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.14em;
-  margin-bottom: -0.14em;
+  padding: 0 0.2em 0.14em;
+  margin: 0 -0.2em -0.14em;
   text-wrap: balance;
 }
 .line-inner {
@@ -350,6 +352,13 @@ button {
 }
 .js img[loading='lazy']:not([data-loaded]) {
   opacity: 0;
+}
+
+/* Cambio de idioma (View Transitions): el texto se disuelve en el otro idioma. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @media (prefers-reduced-motion: reduce) {

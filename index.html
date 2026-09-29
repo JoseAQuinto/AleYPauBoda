@@ -3,6 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script>
+      // Idioma (español en /, inglés en /en/). Antes de pintar nada, lleva al visitante
+      // a su versión: la que eligió en una visita anterior o, si entra por primera vez
+      // en la española y su navegador no usa ninguna lengua de España, la inglesa.
+      // Rutas y clave de almacenamiento: las mismas que en src/lib/i18n.tsx.
+      ;(function (l, n) {
+        try {
+          var page = /^\/en(\/|$)/.test(l.pathname) ? 'en' : 'es'
+          var want = localStorage.getItem('ap-lang')
+          if (!want && page === 'es' && !/bot|crawl|spider|slurp/i.test(n.userAgent)) {
+            var langs = n.languages && n.languages.length ? n.languages : [n.language || 'es']
+            want = 'en'
+            for (var i = 0; i < langs.length; i++) if (/^(es|ca|gl|eu)\b/i.test(langs[i])) want = 'es'
+          }
+          if ((want === 'es' || want === 'en') && want !== page) {
+            l.replace((want === 'en' ? '/en/' : '/') + l.search + l.hash)
+          }
+        } catch (e) {}
+      })(location, navigator)
+    </script>
     <!--album-head-->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />

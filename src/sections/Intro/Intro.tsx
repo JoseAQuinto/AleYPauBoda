@@ -1,12 +1,11 @@
 import type { AlbumChapter, Photo } from '../../lib/album'
 import { site } from '../../data/site'
+import { useLang } from '../../lib/i18n'
 import { Ampersand } from '../../components/Ampersand'
 import { Lines } from '../../components/Lines'
 import { PhotoFrame } from '../../components/PhotoFrame/PhotoFrame'
 import { Reveal } from '../../components/Reveal'
 import styles from './Intro.module.css'
-
-const fotos = (n: number) => `${n} ${n === 1 ? 'foto' : 'fotos'}`
 
 interface IntroProps {
   photo?: Photo
@@ -16,24 +15,26 @@ interface IntroProps {
 
 /** Introducción editorial + índice del álbum, como la primera página de una revista. */
 export function Intro({ photo, chapters, total }: IntroProps) {
+  const { t } = useLang()
+
   return (
     <section id="historia" className={styles.intro} data-tone="light" aria-labelledby="intro-title">
       <div className={styles.grid}>
         <div className={styles.text}>
           <Reveal as="p" className={`label ${styles.eyebrow}`}>
             {/* El punto va al final de cada parte: si la línea se parte, nunca queda un punto al principio. */}
-            {site.intro.eyebrow.map((part, i, all) => (
-              <span key={part}>
+            {t.intro.eyebrow.map((part, i, all) => (
+              <span key={i}>
                 {part}
                 {i < all.length - 1 && <span className={styles.dot} aria-hidden="true" />}
               </span>
             ))}
           </Reveal>
 
-          <Lines as="h2" id="intro-title" className={`display ${styles.statement}`} lines={site.intro.statement} />
+          <Lines as="h2" id="intro-title" className={`display ${styles.statement}`} lines={t.intro.statement} />
 
           <Reveal as="p" className={styles.body} delay={200}>
-            {site.intro.body}
+            {t.intro.body}
           </Reveal>
 
           <Reveal as="p" className={styles.signature} delay={320}>
@@ -50,14 +51,14 @@ export function Intro({ photo, chapters, total }: IntroProps) {
               counted={false}
               parallax={26}
             />
-            <figcaption className={`label ${styles.figcaption}`}>{site.intro.photoCaption}</figcaption>
+            <figcaption className={`label ${styles.figcaption}`}>{t.intro.photoCaption}</figcaption>
           </figure>
         )}
       </div>
 
       <nav className={styles.index} aria-labelledby="index-title">
         <Reveal as="h3" id="index-title" className={`label ${styles.indexTitle}`}>
-          {site.intro.indexTitle}
+          {t.intro.indexTitle}
         </Reveal>
         <ol className={styles.list}>
           {chapters.map((chapter, i) => (
@@ -65,7 +66,7 @@ export function Intro({ photo, chapters, total }: IntroProps) {
               <a href={`#capitulo-${chapter.id}`} className={styles.item}>
                 <span className={styles.num}>{chapter.number}</span>
                 <span className={styles.title}>{chapter.title}</span>
-                <span className={styles.count}>{fotos(chapter.photos.length)}</span>
+                <span className={styles.count}>{t.ui.photos(chapter.photos.length)}</span>
               </a>
             </Reveal>
           ))}
@@ -74,8 +75,8 @@ export function Intro({ photo, chapters, total }: IntroProps) {
               <span className={styles.num} aria-hidden="true">
                 —
               </span>
-              <span className={styles.title}>{site.gallery.title}</span>
-              <span className={styles.count}>{fotos(total)}</span>
+              <span className={styles.title}>{t.gallery.title}</span>
+              <span className={styles.count}>{t.ui.photos(total)}</span>
             </a>
           </Reveal>
         </ol>

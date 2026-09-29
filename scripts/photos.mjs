@@ -66,11 +66,14 @@ async function walk(dir) {
   return out.sort((a, b) => a.localeCompare(b, 'es', { numeric: true }))
 }
 
-/** Lee id y título de cada capítulo de chapters.ts (sin necesidad de compilar TypeScript). */
+/**
+ * Lee id y título (en español) de cada capítulo de chapters.ts, sin compilar TypeScript.
+ * Admite `title: 'Texto'` y `title: { es: 'Texto', en: 'Text' }`.
+ */
 async function readChapters() {
   const source = await fs.readFile(CHAPTERS_TS, 'utf8')
   const chapters = new Map()
-  for (const m of source.matchAll(/id:\s*'([^']+)'\s*,\s*title:\s*'([^']+)'/g)) chapters.set(m[1], m[2])
+  for (const m of source.matchAll(/id:\s*'([^']+)'\s*,\s*title:\s*(?:\{\s*es:\s*)?'([^']+)'/g)) chapters.set(m[1], m[2])
   return chapters
 }
 
@@ -172,11 +175,12 @@ function isMissing(key, manifest) {
   return !existsSync(path.join(OUT_DIR, ...key.split('/')))
 }
 
+// Sin `alt`: la web usa «Ale y Pau · <capítulo>» traducido a cada idioma hasta que se
+// escriba uno propio, p. ej. alt: { es: 'El primer baile', en: 'The first dance' }.
 function entryLine(key, chapters) {
   const ch = chapterOf(key, chapters)
   const src = key.replace(/\\/g, '/').replace(/'/g, "\\'")
-  const alt = ch ? `Ale y Pau · ${chapters.get(ch)}` : 'Ale y Pau'
-  return ch ? `{ src: '${src}', chapter: '${ch}', alt: '${alt}' },` : `{ src: '${src}', alt: '${alt}' },`
+  return ch ? `{ src: '${src}', chapter: '${ch}' },` : `{ src: '${src}' },`
 }
 
 async function makeOgImage() {

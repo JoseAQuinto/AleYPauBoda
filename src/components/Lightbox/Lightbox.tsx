@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent, type PointerEvent } from 'react'
 import type { Photo } from '../../lib/album'
+import { useLang } from '../../lib/i18n'
 import { loadedSrc } from '../../lib/loaded'
 import { prefersReducedMotion } from '../../lib/motion'
 import { ArrowLeft, ArrowRight, Close } from '../Icons'
@@ -50,6 +51,7 @@ export function Lightbox({ photos, index, onNavigate, onClosed }: LightboxProps)
   const [closing, setClosing] = useState(false)
   const [direction, setDirection] = useState(0)
   const [chromeHidden, setChromeHidden] = useState(false)
+  const { t } = useLang()
 
   const total = photos.length
   const isOpen = index !== null
@@ -183,7 +185,7 @@ export function Lightbox({ photos, index, onNavigate, onClosed }: LightboxProps)
     <dialog
       ref={dialogRef}
       className={styles.dialog}
-      aria-label="Visor de fotografías"
+      aria-label={t.ui.viewer}
       data-closing={closing || undefined}
       data-chrome-hidden={chromeHidden || undefined}
       onCancel={(e) => {
@@ -201,7 +203,7 @@ export function Lightbox({ photos, index, onNavigate, onClosed }: LightboxProps)
             </p>
             {photo.chapterTitle && <p className={styles.chapter}>{photo.chapterTitle}</p>}
             <button type="button" className={styles.close} onClick={requestClose} autoFocus>
-              <span className={styles.closeLabel}>Cerrar</span>
+              <span className={styles.closeLabel}>{t.ui.close}</span>
               <Close className={styles.closeIcon} />
             </button>
           </div>
@@ -225,10 +227,10 @@ export function Lightbox({ photos, index, onNavigate, onClosed }: LightboxProps)
             </figure>
           </div>
 
-          <button type="button" className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label="Foto anterior">
+          <button type="button" className={`${styles.nav} ${styles.prev}`} onClick={() => go(-1)} aria-label={t.ui.previous}>
             <ArrowLeft />
           </button>
-          <button type="button" className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label="Foto siguiente">
+          <button type="button" className={`${styles.nav} ${styles.next}`} onClick={() => go(1)} aria-label={t.ui.next}>
             <ArrowRight />
           </button>
 
@@ -241,7 +243,7 @@ export function Lightbox({ photos, index, onNavigate, onClosed }: LightboxProps)
           </div>
 
           <p className="visually-hidden" aria-live="polite">
-            {`Fotografía ${photo.index + 1} de ${total}. ${photo.alt}`}
+            {`${t.ui.photoOf(photo.index + 1, total)} ${photo.alt}`}
           </p>
 
           {/* Precarga de las fotos vecinas para que el paso sea instantáneo. */}

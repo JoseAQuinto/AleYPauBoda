@@ -2,9 +2,11 @@ import { chapters, type AlbumPhoto, type ChapterId } from '../data/chapters'
 import { photos as userPhotos } from '../data/photos'
 import { placeholders } from '../data/placeholders'
 import manifestJson from '../data/photos.manifest.json'
-import type { ChapterDef, ManifestItem, Orientation, PhotoRole, Tone } from '../data/types'
+import { texts } from '../data/site'
+import type { ChapterDef, Lang, ManifestItem, Orientation, PhotoRole, Tone } from '../data/types'
 import { buildImageSet, type ImageSet } from './images'
 import { composeChapter, type Spread } from './compose'
+import { LANGS, pick } from './i18n'
 
 export interface Photo {
   key: string
@@ -53,7 +55,10 @@ const manifest = manifestJson as Record<string, ManifestItem>
 const RATIO: Record<Orientation, number> = { landscape: 3 / 2, portrait: 2 / 3, square: 1 }
 
 const chapterIndex = new Map<string, number>(chapters.map((c, i) => [c.id, i]))
-const chapterTitle = new Map<string, string>(chapters.map((c) => [c.id, c.title]))
+const chapterTitle = (id: string, lang: Lang) => {
+  const chapter = chapters.find((c) => c.id === id)
+  return chapter ? pick(chapter.title, lang) : undefined
+}
 
 function orientationOf(ratio: number): Orientation {
   if (ratio > 1.08) return 'landscape'
@@ -61,7 +66,7 @@ function orientationOf(ratio: number): Orientation {
   return 'square'
 }
 
-function resolve(entry: AlbumPhoto, order: number): Photo {
+function resolve(entry: AlbumPhoto, order: number, lang: Lang): Photo {
   const meta = manifest[entry.src]
   let width = meta?.w ?? entry.width
   let height = meta?.h ?? entry.height
@@ -71,13 +76,13 @@ function resolve(entry: AlbumPhoto, order: number): Photo {
     height = Math.round(2400 / ratio)
   }
   const ratio = width / height
-  const title = entry.chapter ? chapterTitle.get(entry.chapter) : undefined
+  const title = entry.chapter ? chapterTitle(entry.chapter, lang) : undefined
 
   return {
     key: `${order}-${entry.src}`,
     index: order,
-    alt: entry.alt ?? (title ? `Ale y Pau · ${title}` : 'Ale y Pau'),
-    caption: entry.caption,
+    alt: entry.alt ? pick(entry.alt, lang) : texts[lang].ui.defaultAlt(title),
+    caption: entry.caption && pick(entry.caption, lang),
     chapter: entry.chapter,
     chapterTitle: title,
     featured: entry.featured ?? false,
@@ -101,12 +106,12 @@ function galleryRank(p: Photo) {
   return chapters.length
 }
 
-export function buildAlbum(entries: AlbumPhoto[]): Album {
+export function buildAlbum(entries: AlbumPhoto[], lang: Lang): Album {
   const usingPlaceholders = entries.length === 0
   const source = usingPlaceholders ? placeholders : entries
 
   const photos = source
-    .map(resolve)
+    .map((entry, order) => resolve(entry, order, lang))
     .map((p, order) => ({ p, order }))
     .sort((a, b) => galleryRank(a.p) - galleryRank(b.p) || a.order - b.order)
     .map(({ p }, index) => ({ ...p, index }))
@@ -133,8 +138,8 @@ export function buildAlbum(entries: AlbumPhoto[]): Album {
     albumChapters.push({
       id: c.id,
       number: String(albumChapters.length + 1).padStart(2, '0'),
-      title: c.title,
-      lede: c.lede,
+      title: pick(c.title, lang),
+      lede: pick(c.lede, lang),
       tone: def.tone ?? 'light',
       photos: chapterPhotos,
       spreads: composeChapter(chapterPhotos, i),
@@ -152,4 +157,8 @@ export function buildAlbum(entries: AlbumPhoto[]): Album {
   }
 }
 
-export const album = buildAlbum(userPhotos)
+/** El álbum en cada idioma: misma estructura (orden, pliegos, números), textos traducidos. */
+export const albums = Object.fromEntries(LANGS.map((lang) => [lang, buildAlbum(userPhotos, lang)])) as Record<
+  Lang,
+  Album
+>

@@ -6,44 +6,66 @@ import type { ChapterDef, PhotoEntry } from './types'
  * - El número (01, 02…) se calcula solo según la posición.
  * - Un capítulo sin fotos no se muestra.
  * - El `id` es también el nombre de la carpeta dentro de /fotos para `npm run photos`.
+ * - `title` y `lede` llevan el texto en español (es) e inglés (en).
  * - `tone: 'dark'` oscurece suavemente la página mientras se recorre el capítulo.
  */
 export const chapters = [
   {
     id: 'antes',
-    title: 'Antes del sí',
-    lede: 'Los nervios, las risas y esos minutos que parecían no acabar nunca.',
+    title: { es: 'Antes del sí', en: 'Before the vows' },
+    lede: {
+      es: 'Los nervios, las risas y esos minutos que parecían no acabar nunca.',
+      en: 'The nerves, the laughter and those minutes that seemed to last forever.',
+    },
   },
   {
     id: 'ceremonia',
-    title: 'La ceremonia',
-    lede: '18:30, Racó del Pastor. El instante en que todo lo demás desapareció.',
+    title: { es: 'La ceremonia', en: 'The ceremony' },
+    lede: {
+      es: '18:30, Racó del Pastor. El instante en que todo lo demás desapareció.',
+      en: '6.30 pm, Racó del Pastor. The moment everything else faded away.',
+    },
   },
   {
     id: 'just-married',
-    title: 'Just married',
-    lede: 'Salimos de la mano, entre pétalos, sabiendo que ya nada volvería a ser igual.',
+    title: { es: 'Just married', en: 'Just married' },
+    lede: {
+      es: 'Salimos de la mano, entre pétalos, sabiendo que ya nada volvería a ser igual.',
+      en: 'We walked out hand in hand, through the petals, knowing nothing would ever be the same.',
+    },
   },
   {
     id: 'nosotros',
-    title: 'Nosotros',
-    lede: 'Un rato a solas, en mitad de todo, para mirarnos y darnos cuenta.',
+    title: { es: 'Nosotros', en: 'The two of us' },
+    lede: {
+      es: 'Un rato a solas, en mitad de todo, para mirarnos y darnos cuenta.',
+      en: 'A moment alone, in the middle of it all, to look at each other and take it all in.',
+    },
   },
   {
     id: 'celebracion',
-    title: 'La celebración',
-    lede: 'Cóctel, música en directo y una cena larga con las personas que más queremos.',
+    title: { es: 'La celebración', en: 'The celebration' },
+    lede: {
+      es: 'Cóctel, música en directo y una cena larga con las personas que más queremos.',
+      en: 'Cocktails, live music and a long dinner with the people we love most.',
+    },
   },
   {
     id: 'fiesta',
-    title: 'La fiesta',
-    lede: 'Cuando cayó la noche, solo quedaba una cosa por hacer: bailar.',
+    title: { es: 'La fiesta', en: 'The party' },
+    lede: {
+      es: 'Cuando cayó la noche, solo quedaba una cosa por hacer: bailar.',
+      en: 'When night fell, there was only one thing left to do: dance.',
+    },
     tone: 'dark',
   },
   {
     id: 'vosotros',
-    title: 'Los que estuvieron allí',
-    lede: 'Sin vosotros, este día no habría sido el mismo. Gracias por estar.',
+    title: { es: 'Los que estuvieron allí', en: 'Those who were there' },
+    lede: {
+      es: 'Sin vosotros, este día no habría sido el mismo. Gracias por estar.',
+      en: 'Without you, this day would not have been the same. Thank you for being there.',
+    },
   },
 ] as const satisfies readonly ChapterDef[]
 

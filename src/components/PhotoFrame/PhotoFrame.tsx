@@ -3,6 +3,7 @@ import type { Photo } from '../../lib/album'
 import { useLightbox } from '../../context/LightboxContext'
 import { useParallax } from '../../hooks/useParallax'
 import { useReveal } from '../../hooks/useReveal'
+import { useLang } from '../../lib/i18n'
 import { Picture } from '../Picture'
 import styles from './PhotoFrame.module.css'
 
@@ -35,6 +36,7 @@ export function PhotoFrame({
   counted = true,
 }: PhotoFrameProps) {
   const { open } = useLightbox()
+  const { t } = useLang()
   const reveal = useReveal<HTMLDivElement>()
   const parallaxRef = useParallax<HTMLDivElement>(parallax, parallax > 0)
 
@@ -56,7 +58,7 @@ export function PhotoFrame({
 
   const storyAttrs =
     counted && photo.storyNumber
-      ? { 'data-story-number': photo.storyNumber, 'data-chapter-title': photo.chapterTitle }
+      ? { 'data-story-number': photo.storyNumber, 'data-chapter': photo.chapter }
       : undefined
 
   return (
@@ -73,7 +75,7 @@ export function PhotoFrame({
         type="button"
         className={styles.hit}
         onClick={() => open(photo.index)}
-        aria-label={`Ver en grande: ${photo.alt}`}
+        aria-label={t.ui.viewLarge(photo.alt)}
       >
         <Picture photo={photo} sizes={sizes} className={styles.picture} imgClassName={styles.img} />
       </button>

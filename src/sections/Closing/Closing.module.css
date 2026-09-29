@@ -121,6 +121,19 @@
   transition: color 0.4s var(--ease-soft);
 }
 
+/* El otro idioma y «Volver arriba», juntos a la derecha (centrados en móvil). */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px clamp(24px, 3vw, 40px);
+}
+
+.links .textLink {
+  padding: 8px 0;
+}
+
 .toTop {
   display: inline-flex;
   align-items: center;
@@ -154,5 +167,12 @@
     padding: 20px 24px;
     letter-spacing: 0.26em;
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 370px) {
+  .cta {
+    padding-inline: 18px;
+    letter-spacing: 0.2em;
   }
 }

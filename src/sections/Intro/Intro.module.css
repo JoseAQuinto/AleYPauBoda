@@ -62,7 +62,7 @@
   }
 }
 
-.statement :global(.line):nth-child(2) {
+.statement :global(.line):nth-child(2) :global(.line-inner) {
   padding-left: 0.75em;
 }
 

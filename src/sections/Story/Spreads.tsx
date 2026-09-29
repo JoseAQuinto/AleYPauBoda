@@ -1,5 +1,6 @@
 import type { Photo } from '../../lib/album'
 import type { Spread } from '../../lib/compose'
+import { useLang } from '../../lib/i18n'
 import { PhotoFrame } from '../../components/PhotoFrame/PhotoFrame'
 import { Reveal } from '../../components/Reveal'
 import styles from './Spreads.module.css'
@@ -8,11 +9,14 @@ const orient = (p: Photo) => (p.orientation === 'portrait' ? 'p' : 'l')
 
 /** Nº 07 · pie de foto — la «placa» editorial de las fotos aisladas y destacadas. */
 function Plate({ photo, total }: { photo: Photo; total: number }) {
+  const { t } = useLang()
   if (!photo.storyNumber) return null
   const width = Math.max(2, String(total).length)
   return (
     <Reveal as="figcaption" kind="soft" delay={300} className={styles.plate}>
-      <span className={styles.plateNo}>Nº {String(photo.storyNumber).padStart(width, '0')}</span>
+      <span className={styles.plateNo}>
+        {t.ui.number} {String(photo.storyNumber).padStart(width, '0')}
+      </span>
       {photo.caption && (
         <>
           <span className={styles.plateRule} aria-hidden="true" />

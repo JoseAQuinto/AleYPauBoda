@@ -32,9 +32,12 @@ import type { AlbumPhoto } from './chapters'
  *    story      false → solo en la galería completa, no en la narrativa
  *    focus      encuadre al recortar, p. ej. '50% 30%'
  *
+ *  IDIOMAS: `alt` y `caption` pueden ser un texto (igual en español e inglés) o uno
+ *  por idioma: { es: '…', en: '…' }. Sin `alt`, se usa «Ale y Pau · <capítulo>» traducido.
+ *
  *  Ejemplos:
- *    { src: 'nosotros/IMG_2210.jpg', role: 'hero', alt: 'Ale y Pau al atardecer' },
- *    { src: 'ceremonia/IMG_0412.jpg', chapter: 'ceremonia', featured: true, caption: 'El sí.' },
+ *    { src: 'nosotros/IMG_2210.jpg', role: 'hero', alt: { es: 'Ale y Pau al atardecer', en: 'Ale and Pau at sunset' } },
+ *    { src: 'ceremonia/IMG_0412.jpg', chapter: 'ceremonia', featured: true, caption: { es: 'El sí.', en: 'I do.' } },
  */
 export const photos: AlbumPhoto[] = [
   // @nuevas-fotos ← `npm run photos` añade aquí las fotos nuevas. No borres esta línea.

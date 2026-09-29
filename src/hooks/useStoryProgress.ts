@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 export interface StoryProgress {
   /** Número del recuerdo que ocupa el centro de la pantalla. */
   current: number
+  /** Id del capítulo en curso (el título, en cada idioma, lo pone quien lo muestra). */
   chapter: string
   /** La narrativa está en pantalla (fuera de ella, el contador se oculta). */
   active: boolean
@@ -10,7 +11,7 @@ export interface StoryProgress {
 
 /**
  * Sigue qué fotografía de la narrativa está en el centro de la pantalla.
- * Las fotos solo tienen que llevar `data-story-number` y `data-chapter-title`.
+ * Las fotos solo tienen que llevar `data-story-number` y `data-chapter`.
  */
 export function useStoryProgress(containerId: string): StoryProgress {
   const [progress, setProgress] = useState<StoryProgress>({ current: 1, chapter: '', active: false })
@@ -26,7 +27,7 @@ export function useStoryProgress(containerId: string): StoryProgress {
         if (!entry.isIntersecting) continue
         const el = entry.target as HTMLElement
         const current = Number(el.dataset.storyNumber)
-        const chapter = el.dataset.chapterTitle ?? ''
+        const chapter = el.dataset.chapter ?? ''
         setProgress((prev) =>
           prev.current === current && prev.chapter === chapter ? prev : { ...prev, current, chapter },
         )
@@ -39,7 +40,7 @@ export function useStoryProgress(containerId: string): StoryProgress {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue
         const el = entry.target as HTMLElement
-        const chapter = el.dataset.chapterTitle ?? ''
+        const chapter = el.dataset.chapter ?? ''
         const current = Number(el.dataset.storyStart) || 1
         setProgress((prev) =>
           prev.current === current && prev.chapter === chapter ? prev : { ...prev, current, chapter },

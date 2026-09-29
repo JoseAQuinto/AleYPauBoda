@@ -1,11 +1,15 @@
-import { site } from '../data/site'
-import { album } from './album'
+import { site, texts } from '../data/site'
+import type { Lang } from '../data/types'
+import { albums } from './album'
 import { coverSizes } from './images'
+import { DEFAULT_LANG, LANGS, pathFor } from './i18n'
 
 const esc = (value: string) =>
   value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 interface HeadOptions {
+  /** Idioma de la página. */
+  lang: Lang
   /** URL pública sin barra final (en Netlify llega en la variable de entorno URL). */
   baseUrl: string
   /** Rutas de las fuentes críticas para precargar (/assets/…woff2). */
@@ -14,34 +18,47 @@ interface HeadOptions {
 
 /**
  * Todo lo que va en <head> y sale de src/data/site.ts: título, descripción,
- * Open Graph / Twitter (para que el enlace quede bonito en WhatsApp), la precarga
- * de la foto de portada y de las dos tipografías que se ven nada más abrir.
+ * Open Graph / Twitter (para que el enlace quede bonito en WhatsApp) en el idioma
+ * de la página, los enlaces a la otra versión (hreflang), y la precarga de la foto
+ * de portada y de las dos tipografías que se ven nada más abrir.
  */
-export function buildHead({ baseUrl, fonts }: HeadOptions) {
+export function buildHead({ lang, baseUrl, fonts }: HeadOptions) {
+  const t = texts[lang]
+  const album = albums[lang]
   const base = baseUrl.replace(/\/$/, '')
   const abs = (p: string) => (/^https?:\/\//.test(p) ? p : `${base}${p}`)
   const meta = (key: 'name' | 'property', name: string, content: string) =>
     `<meta ${key}="${name}" content="${esc(content)}" />`
 
+  // Las URL canónicas y alternativas tienen que ser absolutas: solo si conocemos la dirección.
+  const alternates = base
+    ? [
+        `<link rel="canonical" href="${esc(abs(pathFor(lang)))}" />`,
+        ...LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(abs(pathFor(l)))}" />`),
+        `<link rel="alternate" hreflang="x-default" href="${esc(abs(pathFor(DEFAULT_LANG)))}" />`,
+      ]
+    : []
+
   const head: string[] = [
-    `<title>${esc(site.seo.title)}</title>`,
-    meta('name', 'description', site.seo.description),
+    `<title>${esc(t.seo.title)}</title>`,
+    meta('name', 'description', t.seo.description),
     meta('name', 'theme-color', site.seo.themeColor),
     ...(site.seo.indexable ? [] : [meta('name', 'robots', 'noindex')]),
-    ...(base ? [`<link rel="canonical" href="${esc(base)}/" />`] : []),
+    ...alternates,
     meta('property', 'og:type', 'website'),
     meta('property', 'og:site_name', site.couple),
-    meta('property', 'og:locale', site.seo.locale),
-    meta('property', 'og:title', site.seo.title),
-    meta('property', 'og:description', site.seo.description),
-    ...(base ? [meta('property', 'og:url', `${base}/`)] : []),
+    meta('property', 'og:locale', t.seo.locale),
+    ...LANGS.filter((l) => l !== lang).map((l) => meta('property', 'og:locale:alternate', texts[l].seo.locale)),
+    meta('property', 'og:title', t.seo.title),
+    meta('property', 'og:description', t.seo.description),
+    ...(base ? [meta('property', 'og:url', abs(pathFor(lang)))] : []),
     meta('property', 'og:image', abs(site.seo.ogImage)),
     meta('property', 'og:image:width', '1200'),
     meta('property', 'og:image:height', '630'),
-    meta('property', 'og:image:alt', site.seo.ogImageAlt),
+    meta('property', 'og:image:alt', t.seo.ogImageAlt),
     meta('name', 'twitter:card', 'summary_large_image'),
-    meta('name', 'twitter:title', site.seo.title),
-    meta('name', 'twitter:description', site.seo.description),
+    meta('name', 'twitter:title', t.seo.title),
+    meta('name', 'twitter:description', t.seo.description),
     meta('name', 'twitter:image', abs(site.seo.ogImage)),
   ]
 

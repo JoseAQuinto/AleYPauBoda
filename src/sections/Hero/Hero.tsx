@@ -1,6 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import type { Photo } from '../../lib/album'
 import { site } from '../../data/site'
+import { useLang } from '../../lib/i18n'
 import { coverSizes } from '../../lib/images'
 import { onScrollFrame, prefersReducedMotion } from '../../lib/motion'
 import { Ampersand } from '../../components/Ampersand'
@@ -16,6 +17,7 @@ const delay = (d: string) => ({ '--d': d }) as CSSProperties
  */
 export function Hero({ photo }: { photo: Photo }) {
   const ref = useRef<HTMLElement>(null)
+  const { t } = useLang()
 
   useEffect(() => {
     const el = ref.current
@@ -39,7 +41,7 @@ export function Hero({ photo }: { photo: Photo }) {
 
       <div className={styles.content}>
         <p className={`label label-center ${styles.kicker} hero-item`} style={delay('0.15s')}>
-          {site.hero.kicker}
+          {t.hero.kicker}
         </p>
         <h1 id="hero-title" className={`display ${styles.title}`}>
           <span className="hero-item" style={delay('0.35s')}>
@@ -56,12 +58,12 @@ export function Hero({ photo }: { photo: Photo }) {
           <time dateTime={site.date.iso}>{site.date.display}</time>
         </p>
         <p className={`${styles.tagline} hero-item`} style={delay('1.15s')}>
-          {site.hero.tagline}
+          {t.hero.tagline}
         </p>
       </div>
 
       <a href="#historia" className={`${styles.cue} hero-item`} style={delay('1.6s')}>
-        <span className="label">{site.hero.cue}</span>
+        <span className="label">{t.hero.cue}</span>
         <span className={styles.cueLine} aria-hidden="true" />
       </a>
     </section>

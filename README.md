@@ -60,12 +60,22 @@ desaparecen todas.
 Tras el paso 2 verás líneas como esta, que puedes retocar:
 
 ```ts
-{ src: 'ceremonia/IMG_0412.jpg', chapter: 'ceremonia', alt: 'Ale y Pau · La ceremonia' },
+{ src: 'ceremonia/IMG_0412.jpg', chapter: 'ceremonia' },
+```
+
+Y así queda una foto afinada, con sus textos en los dos idiomas:
+
+```ts
+{
+  src: 'ceremonia/IMG_0412.jpg', chapter: 'ceremonia', featured: true,
+  alt: { es: 'Ale y Pau se dan el sí', en: 'Ale and Pau say “I do”' },
+  caption: { es: 'El sí.', en: 'I do.' },
+},
 ```
 
 | Campo      | Para qué sirve                                                                  |
 | ---------- | ------------------------------------------------------------------------------- |
-| `alt`      | Descripción para lectores de pantalla. Merece la pena escribir una de verdad.   |
+| `alt`      | Descripción para lectores de pantalla. Merece la pena escribir una de verdad. Sin `alt` se usa «Ale y Pau · capítulo», traducido. |
 | `featured` | `true` → foto protagonista a pantalla completa (una pausa en la historia).      |
 | `caption`  | Pie de foto (se ve en las destacadas, en las aisladas y en el visor).           |
 | `role`     | `'hero'` portada · `'intro'` foto vertical de la introducción · `'closing'` final |
@@ -73,6 +83,8 @@ Tras el paso 2 verás líneas como esta, que puedes retocar:
 | `focus`    | Encuadre cuando la foto se recorta, p. ej. `'50% 30%'` (subir si corta cabezas). |
 | `chapter`  | Capítulo. Sin capítulo, la foto va solo a la galería completa.                  |
 
+- **Textos de las fotos en dos idiomas:** `alt` y `caption` aceptan un texto (vale para
+  los dos idiomas) o `{ es: '…', en: '…' }`.
 - **El orden de las líneas** es el orden dentro de cada capítulo: para mover una foto,
   mueve su línea.
 - **Portada, introducción y final:** marca una foto con `role: 'hero'`, otra (vertical)
@@ -114,8 +126,9 @@ JPG (el script las ignora y avisa).
 
 | Qué                                              | Dónde                    |
 | ------------------------------------------------ | ------------------------ |
-| Textos, fecha, lugar, enlaces, SEO, fotógrafo     | `src/data/site.ts`       |
-| Capítulos (título, frase, orden, tono noche)      | `src/data/chapters.ts`   |
+| Textos en español e inglés (`texts.es`, `texts.en`) | `src/data/site.ts`    |
+| Fecha, lugar, enlaces, SEO, fotógrafo            | `src/data/site.ts` (`site`) |
+| Capítulos (título y frase en los dos idiomas, orden, tono noche) | `src/data/chapters.ts` |
 | Fotos                                            | `src/data/photos.ts`     |
 | Colores, tipografías, espaciados                  | `src/styles/global.css`  |
 
@@ -125,6 +138,23 @@ JPG (el script las ignora y avisa).
 - El crédito del fotógrafo aparece en el pie al rellenar `photographer` en `site.ts`.
 - Por defecto el álbum pide a los buscadores **no indexarlo** (`seo.indexable: false`):
   es algo personal. El enlace funciona y se ve bonito al compartirlo igualmente.
+
+---
+
+## 🌐 Idiomas (español · inglés)
+
+- **Dos páginas:** el español vive en `/` y el inglés en `/en/`. Las dos se generan en
+  el build, así que cada una se ve al instante y tiene su propia vista previa en
+  WhatsApp: a los invitados que hablen inglés, mandadles el enlace terminado en `/en/`.
+- **El selector**, como en la web de la boda, es el código del otro idioma al final de
+  la cabecera (**EN** / **ES**); en el pie aparece también «English» / «Español». El
+  cambio es instantáneo, con un fundido, y la página se queda donde estaba.
+- **Se recuerda la elección:** quien elige un idioma lo verá así en sus próximas visitas.
+  La primera vez que alguien entra en `/`, si su navegador no usa español (ni catalán,
+  gallego o euskera), pasa directamente a `/en/`. Un enlace a `/en/` siempre se respeta.
+- **Traducir un texto:** cada texto tiene su versión en `texts.es` y `texts.en`
+  (`site.ts`), y los capítulos llevan `title` y `lede` con `{ es, en }`. Si a la versión
+  inglesa le falta una clave, `npm run build` avisa.
 
 ---
 
@@ -148,14 +178,15 @@ src/
 ├─ data/          ← lo único que hay que editar: site, chapters, photos (+ placeholders)
 ├─ lib/           album.ts (modelo del álbum) · compose.ts (maquetación automática)
 │                 images.ts (srcset/AVIF/WebP) · motion.ts (scroll e IntersectionObserver)
+│                 i18n.tsx (idioma, rutas / y /en/, cambio de idioma)
 ├─ hooks/         apariciones, parallax, estado del header, progreso y «luz» de la página
 ├─ context/       visor de fotos
-├─ components/    Header, Picture, PhotoFrame, Lightbox, MemoryCounter, Ampersand…
+├─ components/    Header, LangSwitch, Picture, PhotoFrame, Lightbox, MemoryCounter, Ampersand…
 ├─ sections/      Hero · Intro · Story (capítulos y pliegos) · Gallery · Finale · Closing
 └─ styles/        sistema visual (tokens, tipografía, apariciones)
 scripts/
 ├─ photos.mjs     optimización de fotos y sincronización con photos.ts
-└─ prerender.mjs  genera el HTML estático y el <head> en el build
+└─ prerender.mjs  genera el HTML estático y el <head> de cada idioma en el build
 ```
 
 **El recorrido:** portada a pantalla completa → introducción e índice → siete capítulos

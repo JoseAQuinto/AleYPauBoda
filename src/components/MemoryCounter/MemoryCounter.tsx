@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import type { AlbumChapter } from '../../lib/album'
 import { useStoryProgress } from '../../hooks/useStoryProgress'
 import styles from './MemoryCounter.module.css'
 
@@ -17,16 +18,24 @@ function RollingDigit({ value }: { value: number }) {
   )
 }
 
+interface MemoryCounterProps {
+  chapters: AlbumChapter[]
+  total: number
+  containerId: string
+}
+
 /**
  * Detalle especial: mientras recorres la historia, un pequeño contador
  * cuenta los recuerdos (01, 02, 03…) y dice en qué capítulo estás.
  * Es decorativo (aria-hidden): el contenido ya es accesible por sí mismo.
  */
-export function MemoryCounter({ total, containerId }: { total: number; containerId: string }) {
+export function MemoryCounter({ chapters, total, containerId }: MemoryCounterProps) {
   const { current, chapter, active } = useStoryProgress(containerId)
   const width = Math.max(2, String(total).length)
   const digits = String(current).padStart(width, '0').split('').map(Number)
   const progress = total > 1 ? (current - 1) / (total - 1) : 1
+  // El título sale del álbum (no del DOM) para que cambie al instante con el idioma.
+  const title = chapters.find((c) => c.id === chapter)?.title ?? ''
 
   return (
     <div className={styles.counter} data-active={active || undefined} aria-hidden="true">
@@ -42,7 +51,7 @@ export function MemoryCounter({ total, containerId }: { total: number; container
         <span className={styles.total}>{String(total).padStart(width, '0')}</span>
       </div>
       <span key={chapter} className={styles.chapter}>
-        {chapter}
+        {title}
       </span>
     </div>
   )

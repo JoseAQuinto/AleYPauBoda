@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'react'
 import type { Photo } from '../../lib/album'
-import { site } from '../../data/site'
 import { useLightbox } from '../../context/LightboxContext'
 import { useReveal } from '../../hooks/useReveal'
+import { useLang } from '../../lib/i18n'
 import { Lines } from '../../components/Lines'
 import { Picture } from '../../components/Picture'
 import { Reveal } from '../../components/Reveal'
@@ -21,6 +21,7 @@ const thumbSizes = (ratio: number) =>
 
 function GalleryItem({ photo, total }: { photo: Photo; total: number }) {
   const { open } = useLightbox()
+  const { t } = useLang()
   const ref = useReveal<HTMLLIElement>()
   const width = Math.max(2, String(total).length)
   return (
@@ -34,7 +35,7 @@ function GalleryItem({ photo, total }: { photo: Photo; total: number }) {
         type="button"
         className={styles.button}
         onClick={() => open(photo.index)}
-        aria-label={`Ver fotografía ${photo.index + 1} de ${total}: ${photo.alt}`}
+        aria-label={t.ui.viewPhoto(photo.index + 1, total, photo.alt)}
       >
         <Picture photo={photo} sizes={thumbSizes(photo.ratio)} className={styles.picture} imgClassName={styles.img} />
         <span className={styles.no} aria-hidden="true">
@@ -50,16 +51,18 @@ function GalleryItem({ photo, total }: { photo: Photo; total: number }) {
  * que respetan la proporción de cada foto). Solo CSS, sin medir nada con JS.
  */
 export function Gallery({ photos }: { photos: Photo[] }) {
+  const { t } = useLang()
+
   return (
     <section id="galeria" className={styles.gallery} data-tone="light" aria-labelledby="galeria-titulo">
       <header className={styles.head}>
         <Reveal as="p" className={`label ${styles.eyebrow}`}>
-          {site.gallery.eyebrow}
+          {t.gallery.eyebrow}
         </Reveal>
-        <Lines as="h2" id="galeria-titulo" className={`display ${styles.title}`} lines={[site.gallery.title]} />
+        <Lines as="h2" id="galeria-titulo" className={`display ${styles.title}`} lines={[t.gallery.title]} />
         <Reveal as="p" className={styles.meta} delay={240}>
-          <span className={styles.count}>{photos.length} fotografías</span>
-          <span className={styles.hint}>{site.gallery.hint}</span>
+          <span className={styles.count}>{t.ui.photographs(photos.length)}</span>
+          <span className={styles.hint}>{t.gallery.hint}</span>
         </Reveal>
       </header>
 

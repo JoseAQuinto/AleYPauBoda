@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { Photo } from '../../lib/album'
 import { site } from '../../data/site'
+import { useLang } from '../../lib/i18n'
 import { coverSizes } from '../../lib/images'
 import { clamp, onScrollFrame, prefersReducedMotion } from '../../lib/motion'
 import { Ampersand } from '../../components/Ampersand'
@@ -18,6 +19,7 @@ const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
  */
 export function Finale({ photo }: { photo: Photo }) {
   const trackRef = useRef<HTMLDivElement>(null)
+  const { t } = useLang()
 
   useEffect(() => {
     const track = trackRef.current
@@ -42,7 +44,7 @@ export function Finale({ photo }: { photo: Photo }) {
         <Reveal kind="soft" className={styles.ornament}>
           <Ampersand scale={2.2} />
         </Reveal>
-        <Lines as="p" id="finale-quote" className={`display ${styles.quoteText}`} lines={site.finale.quote} delay={150} />
+        <Lines as="p" id="finale-quote" className={`display ${styles.quoteText}`} lines={t.finale.quote} delay={150} />
       </blockquote>
 
       <div ref={trackRef} className={styles.track}>
