@@ -1,0 +1,146 @@
+.hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  color: var(--cream);
+  background: #2a2a22;
+  isolation: isolate;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  transform: translate3d(0, var(--hero-shift, 0px), 0);
+  will-change: transform;
+}
+
+.picture,
+.img {
+  width: 100%;
+  height: 100%;
+}
+
+.img {
+  object-fit: cover;
+  animation: heroZoom 3.6s var(--ease-out) both;
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.1);
+  }
+}
+
+/* Velo mínimo para que el texto se lea sobre cualquier fotografía. */
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 50%, rgba(20, 20, 15, 0.24), rgba(20, 20, 15, 0) 72%),
+    linear-gradient(180deg, rgba(20, 20, 15, 0.26) 0%, rgba(20, 20, 15, 0.06) 30%, rgba(20, 20, 15, 0.12) 60%, rgba(20, 20, 15, 0.58) 100%);
+}
+
+.content {
+  padding: 0 var(--gutter);
+  text-align: center;
+  opacity: var(--hero-fade, 1);
+  transform: translate3d(0, var(--hero-lift, 0px), 0);
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.18);
+}
+
+.kicker {
+  margin-bottom: clamp(18px, 3vw, 30px);
+  opacity: 0.92;
+}
+
+.title {
+  font-size: clamp(4.5rem, 17vw, 13.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.title > span {
+  display: inline-block;
+}
+
+.amp {
+  color: var(--gold);
+  margin: 0 0 0 0.05em;
+}
+
+.date {
+  margin-top: clamp(26px, 4vw, 44px);
+  font-family: var(--font-sans);
+  font-size: clamp(0.6875rem, 1.1vw, 0.8125rem);
+  font-weight: 500;
+  letter-spacing: 0.62em;
+  text-indent: 0.62em;
+}
+
+.tagline {
+  margin-top: clamp(14px, 2vw, 22px);
+  font-style: italic;
+  font-size: clamp(1.0625rem, 1.8vw, 1.4375rem);
+  line-height: 1.4;
+  opacity: 0.94;
+}
+
+.cue {
+  position: absolute;
+  left: 50%;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  translate: -50% 0;
+  padding: 8px 12px;
+  color: var(--cream);
+  white-space: nowrap;
+}
+
+.cue :global(.label) {
+  font-size: 0.625rem;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+.cueLine {
+  position: relative;
+  width: 1px;
+  height: clamp(40px, 7vh, 64px);
+  background: rgba(252, 250, 247, 0.28);
+  overflow: hidden;
+}
+
+.cueLine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  transform: translateY(-100%);
+  animation: cueDrop 2.6s var(--ease-in-out) 2.4s infinite;
+}
+
+@keyframes cueDrop {
+  0% {
+    transform: translateY(-100%);
+  }
+  55%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img,
+  .cueLine::after {
+    animation: none;
+  }
+}

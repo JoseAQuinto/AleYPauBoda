@@ -1,0 +1,125 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-h);
+  padding: env(safe-area-inset-top) max(var(--gutter), env(safe-area-inset-right)) 0
+    max(var(--gutter), env(safe-area-inset-left));
+  color: var(--cream);
+  transition:
+    transform 0.7s var(--ease-out),
+    background-color 0.6s var(--ease-soft),
+    color 0.6s var(--ease-soft),
+    box-shadow 0.6s var(--ease-soft);
+}
+
+/* Sobre la portada: velo mínimo para que el texto se lea sobre cualquier foto. */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -24px;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgba(18, 18, 14, 0.28), rgba(18, 18, 14, 0));
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease-soft);
+}
+
+.header[data-solid] {
+  color: var(--fg);
+  background-color: color-mix(in srgb, var(--bg) 84%, transparent);
+  -webkit-backdrop-filter: saturate(1.2) blur(14px);
+  backdrop-filter: saturate(1.2) blur(14px);
+  box-shadow: 0 1px 0 var(--hairline);
+}
+
+.header[data-solid]::before {
+  opacity: 0;
+}
+
+/* Un poco más de -100% para que el filete inferior (box-shadow) tampoco asome. */
+.header[data-hidden],
+:global(html.lb-open) .header {
+  transform: translate3d(0, calc(-100% - 2px), 0);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.02em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  padding: 8px 0;
+}
+
+.amp {
+  color: var(--gold);
+  margin: 0 0.04em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3.4vw, 44px);
+}
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 10px 0;
+  font-family: var(--font-sans);
+  font-size: 0.6563rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0.3em;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.arrow {
+  width: 1.35em;
+  height: 1.35em;
+  margin: -0.2em 0 -0.2em -0.15em;
+  transition: transform 0.5s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .link:hover .arrow {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (max-width: 380px) {
+  .nav {
+    gap: 16px;
+  }
+  .link {
+    letter-spacing: 0.22em;
+  }
+}

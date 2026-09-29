@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es" data-tone="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!--album-head-->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+      // Activa las animaciones solo si hay JavaScript, y muestra el texto de la
+      // portada cuando la tipografía principal ya está lista (sin saltos de fuente).
+      ;(function (d) {
+        var h = d.documentElement
+        var ready = false
+        var done = function () {
+          if (!ready) {
+            ready = true
+            h.classList.add('is-ready')
+          }
+        }
+        h.classList.add('js')
+        if (d.fonts && d.fonts.addEventListener) {
+          d.fonts.addEventListener('loadingdone', function () {
+            if (d.fonts.check('italic 1em "Bodoni Moda Variable"')) done()
+          })
+        }
+        setTimeout(done, 1600)
+      })(document)
+    </script>
+  </head>
+  <body>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

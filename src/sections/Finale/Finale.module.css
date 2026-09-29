@@ -1,0 +1,122 @@
+.finale {
+  position: relative;
+}
+
+/* ── La frase ─────────────────────────────────────────────────────────────── */
+
+.quote {
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  padding: var(--space-xl) var(--gutter) var(--space-l);
+  text-align: center;
+}
+
+.ornament {
+  color: var(--accent);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1;
+  margin-bottom: var(--space-s);
+}
+
+.quoteText {
+  font-size: clamp(2.5rem, 7vw, 6.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+/* ── La última foto, abriéndose ───────────────────────────────────────────── */
+
+.track {
+  --e: 0;
+  --o: 0;
+  --inset-x: 11%;
+  --inset-y: 17%;
+  position: relative;
+  height: 230svh;
+}
+
+@media (min-width: 768px) {
+  .track {
+    --inset-x: 27%;
+    --inset-y: 16%;
+  }
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(calc((1 - var(--e)) * var(--inset-y)) calc((1 - var(--e)) * var(--inset-x)));
+  will-change: clip-path;
+}
+
+.zoom {
+  position: absolute;
+  inset: 0;
+  transform: scale(calc(1.14 - var(--e) * 0.14));
+  will-change: transform;
+}
+
+.overlay {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 0 var(--gutter) max(12svh, 56px);
+  text-align: center;
+  color: var(--cream);
+  opacity: var(--o);
+  transform: translate3d(0, calc((1 - var(--o)) * 24px), 0);
+  pointer-events: none;
+}
+
+.overlay::before {
+  content: '';
+  position: absolute;
+  inset: -40svh 0 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(18, 18, 14, 0.55), rgba(18, 18, 14, 0));
+}
+
+.names {
+  font-size: clamp(3.25rem, 11vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.2);
+}
+
+.amp {
+  color: var(--gold);
+}
+
+.date {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+}
+
+/* Sin animaciones: la foto se muestra entera y el texto visible. */
+.track[data-static] {
+  --e: 1;
+  --o: 1;
+  height: 100svh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    --e: 1;
+    --o: 1;
+    height: 100svh;
+  }
+}

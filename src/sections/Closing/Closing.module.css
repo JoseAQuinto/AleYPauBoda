@@ -1,0 +1,158 @@
+.closing {
+  padding: var(--space-xl) var(--gutter) 0;
+}
+
+.inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.monogram {
+  display: inline-flex;
+  align-items: baseline;
+  font-style: italic;
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
+.amp {
+  color: var(--accent);
+  margin: 0 0.06em;
+}
+
+.thanks {
+  margin-top: var(--space-s);
+  font-size: clamp(2rem, 4.6vw, 3.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.ctaWrap {
+  margin-top: var(--space-m);
+}
+
+/* Botón con el lenguaje del «Discover the story» de la web de la boda. */
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px clamp(28px, 4vw, 46px);
+  border: 1px solid color-mix(in srgb, var(--fg) 35%, transparent);
+  font-family: var(--font-sans);
+  font-size: 0.6563rem;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color 0.6s var(--ease-soft),
+    border-color 0.6s var(--ease-soft);
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.ctaIcon {
+  width: 1.5em;
+  height: 1.5em;
+  margin: -0.3em 0;
+  transition: transform 0.6s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .cta:hover {
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .cta:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .cta:hover .ctaIcon {
+    transform: translate(3px, -3px);
+  }
+}
+
+.place {
+  margin-top: var(--space-s);
+  font-family: var(--font-sans);
+  font-size: 0.5938rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 32px;
+  max-width: var(--max);
+  margin: var(--space-l) auto 0;
+  padding: 28px 0 max(28px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-sans);
+  font-size: 0.5938rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
+
+.textLink,
+.toTop {
+  transition: color 0.4s var(--ease-soft);
+}
+
+.toTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.toTop svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+@media (hover: hover) {
+  .textLink:hover,
+  .toTop:hover {
+    color: var(--accent-ink);
+  }
+}
+
+@media (max-width: 640px) {
+  .bottom {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* En móvil el botón cabe en una sola línea (sin «boda» huérfana debajo). */
+@media (max-width: 480px) {
+  .cta {
+    gap: 10px;
+    padding: 20px 24px;
+    letter-spacing: 0.26em;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,198 @@
+.intro {
+  padding: var(--space-xl) var(--gutter) var(--space-l);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-m);
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    align-items: start;
+  }
+  .text {
+    grid-column: 2 / span 7;
+  }
+  .figure {
+    grid-column: 9 / span 4;
+    margin-top: clamp(120px, 16vw, 260px);
+  }
+}
+
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 6px;
+  color: var(--accent-ink);
+  margin-bottom: var(--space-s);
+}
+
+.eyebrow > span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  margin: 0 1.1em 0 0.75em;
+  opacity: 0.7;
+}
+
+/* Tres versos, uno por línea: el cuerpo se ajusta al ancho para que ninguno se parta
+   (el más largo, con su sangría, mide unas 9,7 em). */
+.statement {
+  font-size: clamp(1.875rem, 8.8vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+}
+
+@media (min-width: 900px) {
+  .statement {
+    font-size: min(5.1vw, 5.25rem);
+  }
+}
+
+.statement :global(.line):nth-child(2) {
+  padding-left: 0.75em;
+}
+
+.body {
+  max-width: 33em;
+  margin-top: var(--space-s);
+  color: var(--fg-soft);
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  line-height: 1.75;
+}
+
+.signature {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  margin-top: clamp(28px, 3.5vw, 44px);
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.signatureRule {
+  align-self: center;
+  width: 44px;
+  height: 1px;
+  margin-right: 0.6em;
+  background: var(--accent);
+}
+
+.amp {
+  color: var(--accent);
+}
+
+.figure {
+  width: min(80%, 460px);
+  margin-left: auto;
+}
+
+@media (min-width: 900px) {
+  .figure {
+    width: 100%;
+  }
+}
+
+.figcaption {
+  margin-top: 16px;
+  color: var(--fg-soft);
+  font-size: 0.5938rem;
+}
+
+/* ── Índice ─────────────────────────────────────────────────────────────────── */
+
+.index {
+  max-width: var(--max);
+  margin: var(--space-xl) auto 0;
+}
+
+@media (min-width: 900px) {
+  .index {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+  }
+  .indexTitle {
+    grid-column: 2 / span 2;
+    padding-top: 22px;
+  }
+  .list {
+    grid-column: 4 / -1;
+  }
+}
+
+.indexTitle {
+  color: var(--accent-ink);
+  margin-bottom: 20px;
+}
+
+.list {
+  display: grid;
+  border-bottom: 1px solid var(--hairline);
+}
+
+@media (min-width: 700px) {
+  .list {
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(32px, 5vw, 72px);
+    border-bottom: 0;
+  }
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 2.6em 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 18px 0 16px;
+  border-top: 1px solid var(--hairline);
+}
+
+.num {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--accent-ink);
+}
+
+.title {
+  font-style: italic;
+  font-size: clamp(1.375rem, 2vw, 1.875rem);
+  line-height: 1.15;
+  text-wrap: balance;
+  transition:
+    transform 0.7s var(--ease-out),
+    color 0.5s var(--ease-soft);
+}
+
+.count {
+  font-family: var(--font-sans);
+  font-size: 0.5938rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .item:hover .title {
+    transform: translateX(8px);
+    color: var(--accent-ink);
+  }
+}

@@ -1,0 +1,23 @@
+# Dependencias y build
+node_modules
+dist
+.ssr
+*.local
+
+# Fotos originales: pesadas y con metadatos (GPS…). Solo se publican las versiones
+# optimizadas que genera `npm run photos` en public/images/wedding. Ver README.
+/fotos/*
+!/fotos/LEEME.md
+
+# Netlify
+.netlify
+
+# Editor / sistema
+.vscode/*
+!.vscode/extensions.json
+.idea
+.claude
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

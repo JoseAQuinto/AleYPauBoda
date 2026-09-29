@@ -1,0 +1,373 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tipografías (autoalojadas: sin peticiones a Google, mejor rendimiento y RGPD)
+   Bodoni Moda (con eje óptico) para títulos y texto · Montserrat para etiquetas
+   ───────────────────────────────────────────────────────────────────────────── */
+@import '@fontsource-variable/bodoni-moda/opsz.css';
+@import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+@import '@fontsource/montserrat/latin-400.css';
+@import '@fontsource/montserrat/latin-500.css';
+
+/* ── Sistema visual ─────────────────────────────────────────────────────────── */
+
+/* Registradas para que el cambio de «luz» entre capítulos se anime suavemente. */
+@property --bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #fcfaf7;
+}
+@property --fg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2c2e25;
+}
+@property --fg-soft {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #66685c;
+}
+@property --accent-ink {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #86704a;
+}
+@property --hairline {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(44, 46, 37, 0.16);
+}
+
+:root {
+  --cream: #fcfaf7;
+  --paper: #f4f0ea;
+  --sand: #e8e1d5;
+  --olive: #2c2e25;
+  --ink: #1d1e19;
+  --muted: #66685c;
+  --gold: #b59f77;
+  --gold-ink: #86704a;
+  --night: #191a15;
+
+  --bg: var(--cream);
+  --fg: var(--olive);
+  --fg-soft: var(--muted);
+  --accent: var(--gold);
+  --accent-ink: var(--gold-ink);
+  --hairline: rgba(44, 46, 37, 0.16);
+
+  --font-display: 'Bodoni Moda Variable', 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-sans: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --gutter: clamp(20px, 5vw, 72px);
+  --max: 1480px;
+  --col-gap: clamp(12px, 2vw, 32px);
+  --header-h: 64px;
+
+  --space-xs: clamp(16px, 2vw, 24px);
+  --space-s: clamp(28px, 4vw, 48px);
+  --space-m: clamp(48px, 7vw, 104px);
+  --space-l: clamp(80px, 11vw, 168px);
+  --space-xl: clamp(120px, 17vw, 260px);
+
+  --label-track: 0.34em;
+
+  color-scheme: light;
+  transition:
+    --bg 1.6s var(--ease-soft),
+    --fg 1.6s var(--ease-soft),
+    --fg-soft 1.6s var(--ease-soft),
+    --accent-ink 1.6s var(--ease-soft),
+    --hairline 1.6s var(--ease-soft);
+}
+
+:root[data-tone='dark'] {
+  --bg: var(--night);
+  --fg: #ece6db;
+  --fg-soft: #a9a494;
+  --accent-ink: #cdb88f;
+  --hairline: rgba(236, 230, 219, 0.16);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(134, 112, 74, 0.45) transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+html.lb-open {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--cream);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(134, 112, 74, 0.35);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(134, 112, 74, 0.6);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ol,
+ul {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
+}
+
+[id] {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+/* ── Utilidades tipográficas ────────────────────────────────────────────────── */
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--label-track);
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+/* El tracking añade aire tras la última letra: lo compensamos para centrar de verdad. */
+.label-center {
+  text-align: center;
+  text-indent: var(--label-track);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 12px 18px;
+  background: var(--olive);
+  color: var(--cream);
+  transform: translateY(-160%);
+  transition: transform 0.3s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ── Apariciones (solo con JavaScript activo: sin JS todo se ve igualmente) ─── */
+
+.js [data-reveal] {
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.4s var(--ease-out),
+    clip-path 1.6s var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+.js [data-reveal='fade']:not(.is-in) {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+}
+
+.js [data-reveal='soft']:not(.is-in) {
+  opacity: 0;
+}
+
+/* Imágenes: se descubren de abajo arriba con un zoom mínimo. */
+.js [data-reveal='image']:not(.is-in) {
+  opacity: 0;
+  clip-path: inset(14% 0 0 0);
+}
+.js [data-reveal='image'] img {
+  transition:
+    transform 2.2s var(--ease-out),
+    opacity 0.9s var(--ease-soft);
+}
+.js [data-reveal='image']:not(.is-in) img {
+  transform: scale(1.08);
+}
+
+/* Líneas de texto que suben desde una máscara. Si una no cabe en pantallas
+   estrechas, se parte en dos mitades equilibradas (nunca una palabra huérfana). */
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  text-wrap: balance;
+}
+.line-inner {
+  display: block;
+}
+.js [data-reveal='lines'] .line-inner {
+  transition: transform 1.4s var(--ease-out);
+  transition-delay: calc(var(--delay, 0ms) + var(--i, 0) * 110ms);
+}
+.js [data-reveal='lines']:not(.is-in) .line-inner {
+  transform: translate3d(0, 108%, 0);
+}
+
+/* Portada: el texto aparece por capas cuando la tipografía ya ha cargado
+   (clase is-ready, la pone el script del <head>), así no hay saltos de fuente. */
+.js .hero-item {
+  opacity: 0;
+}
+.js.is-ready .hero-item {
+  animation: heroRise 1.7s var(--ease-out) var(--d, 0s) both;
+}
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Imágenes diferidas: aparecen con un fundido al terminar de cargar. */
+.js img[loading='lazy'] {
+  transition: opacity 0.9s var(--ease-soft);
+}
+.js img[loading='lazy']:not([data-loaded]) {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal],
+  .js [data-reveal] img,
+  .js [data-reveal] .line-inner {
+    transform: none !important;
+    clip-path: none !important;
+    transition: opacity 0.6s linear !important;
+  }
+}

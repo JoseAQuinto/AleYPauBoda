@@ -1,0 +1,324 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Pliegos editoriales. Móvil primero: fotos grandes, ritmo con desplazamientos
+   y algunas a sangre. En escritorio, rejilla de 12 columnas tipo revista.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.spread {
+  position: relative;
+}
+
+.spread + .spread {
+  margin-top: var(--space-l);
+}
+
+.spread + .spread[data-kind='feature'],
+.spread[data-kind='feature'] + .spread {
+  margin-top: var(--space-xl);
+}
+
+.wide,
+.solo,
+.grid {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ── Placa: Nº 07 — pie de foto ─────────────────────────────────────────────── */
+
+.plate {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  max-width: var(--max);
+  margin: 18px auto 0;
+  padding-inline: var(--gutter);
+}
+
+.plateNo {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+
+.plateRule {
+  align-self: center;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+.plateCaption {
+  font-style: italic;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  color: var(--fg-soft);
+}
+
+/* ── Destacada (pausa) ──────────────────────────────────────────────────────── */
+
+.featureP .plate {
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .featureL .featureFrame {
+    aspect-ratio: auto;
+    height: min(100svh, calc(100vw / var(--r)));
+  }
+
+  .featureL .plate {
+    justify-content: flex-end;
+  }
+
+  .featureP .featureFrame {
+    width: min(calc(100% - 2 * var(--gutter)), calc(92svh * var(--r)));
+    margin-inline: auto;
+  }
+}
+
+/* ── Horizontal cinematográfica ─────────────────────────────────────────────── */
+
+.wide {
+  padding-inline: 0;
+}
+
+@media (min-width: 768px) {
+  .wide {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    padding-inline: var(--gutter);
+  }
+  .wide .wideFrame {
+    grid-column: 2 / -1;
+    aspect-ratio: 2 / 1;
+  }
+  [data-align='start'] .wideFrame {
+    grid-column: 1 / span 11;
+  }
+}
+
+/* ── Vertical aislada ───────────────────────────────────────────────────────── */
+
+.solo .soloFrame {
+  width: 80%;
+}
+
+[data-align='end'] .soloFrame {
+  margin-left: auto;
+}
+
+.solo .plate {
+  padding-inline: 0;
+}
+
+[data-align='end'] .solo .plate {
+  justify-content: flex-end;
+}
+
+@media (min-width: 768px) {
+  .solo {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    align-items: end;
+  }
+  .solo .soloFrame {
+    grid-row: 1;
+    grid-column: 7 / span 5;
+    width: 100%;
+  }
+  .solo .plate {
+    grid-row: 1;
+    grid-column: 3 / span 3;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    margin: 0 0 8px;
+  }
+  [data-align='start'] .solo .soloFrame {
+    grid-column: 2 / span 5;
+  }
+  [data-align='start'] .solo .plate {
+    grid-column: 8 / span 3;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .plateCaption {
+    font-size: 1.1875rem;
+  }
+}
+
+/* ── Parejas y tríos en móvil (solo por debajo de 768px) ──────────────────── */
+
+@media (max-width: 767.98px) {
+  .pair[data-variant='pp'],
+  .triptych,
+  .mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .pair[data-variant='pp'] .b,
+  .triptych .b {
+    margin-top: 56px;
+  }
+
+  .pair[data-variant='ll'] .b {
+    width: 72%;
+    margin: 10px 0 0 auto;
+  }
+
+  [data-align='start'] .pair[data-variant='ll'] .b {
+    margin: 10px auto 0 0;
+  }
+
+  .pair[data-variant='mixed'] .b {
+    margin-top: 10px;
+  }
+
+  .pair[data-variant='mixed'] [data-o='p'] {
+    width: 64%;
+  }
+
+  [data-align='end'] .pair[data-variant='mixed'] [data-o='p'] {
+    margin-left: auto;
+  }
+
+  .triptych .c {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 64%;
+  }
+
+  .mosaic .big {
+    grid-column: 1 / -1;
+  }
+
+  .mosaic .s1,
+  .mosaic .s2 {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* ── Escritorio: rejilla de 12 columnas ─────────────────────────────────────── */
+
+@media (min-width: 768px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    row-gap: var(--col-gap);
+    align-items: start;
+  }
+
+  /* Dos verticales: una grande y otra más pequeña, desplazada. */
+  [data-align='start'] .pair[data-variant='pp'] .a {
+    grid-column: 1 / span 6;
+  }
+  [data-align='start'] .pair[data-variant='pp'] .b {
+    grid-column: 8 / span 4;
+    margin-top: clamp(80px, 14vw, 240px);
+  }
+  [data-align='end'] .pair[data-variant='pp'] .a {
+    grid-column: 2 / span 4;
+    margin-top: clamp(80px, 14vw, 240px);
+  }
+  [data-align='end'] .pair[data-variant='pp'] .b {
+    grid-column: 7 / span 6;
+  }
+
+  /* Dos horizontales: una amplia y otra pequeña, a contratiempo. */
+  [data-align='start'] .pair[data-variant='ll'] .a {
+    grid-column: 1 / span 7;
+  }
+  [data-align='start'] .pair[data-variant='ll'] .b {
+    grid-column: 9 / span 4;
+    margin-top: clamp(120px, 18vw, 300px);
+  }
+  [data-align='end'] .pair[data-variant='ll'] .a {
+    grid-column: 1 / span 4;
+    margin-top: clamp(120px, 18vw, 300px);
+  }
+  [data-align='end'] .pair[data-variant='ll'] .b {
+    grid-column: 6 / span 7;
+  }
+
+  /* Vertical + horizontal, alineadas por la base. */
+  .pair[data-variant='mixed'] {
+    align-items: end;
+  }
+  .pair[data-variant='mixed'] .a[data-o='l'] {
+    grid-column: 1 / span 7;
+  }
+  .pair[data-variant='mixed'] .a[data-o='p'] {
+    grid-column: 2 / span 4;
+  }
+  .pair[data-variant='mixed'] .b[data-o='p'] {
+    grid-column: 9 / span 4;
+  }
+  .pair[data-variant='mixed'] .b[data-o='l'] {
+    grid-column: 6 / span 7;
+  }
+
+  /* Tríptico: tres verticales, la central un poco más baja. */
+  .triptych .a {
+    grid-column: 1 / span 4;
+  }
+  .triptych .b {
+    grid-column: 5 / span 4;
+    margin-top: clamp(60px, 9vw, 150px);
+  }
+  .triptych .c {
+    grid-column: 9 / span 4;
+  }
+
+  /* Mosaico: una grande y dos apiladas a su lado. */
+  .mosaic {
+    grid-template-rows: 1fr 1fr;
+    align-items: stretch;
+  }
+  .mosaic .big {
+    grid-row: 1 / span 2;
+  }
+  .mosaic .s1 {
+    grid-row: 1;
+  }
+  .mosaic .s2 {
+    grid-row: 2;
+  }
+
+  [data-align='start'] .mosaic[data-big='l'] .big {
+    grid-column: 1 / span 7;
+  }
+  [data-align='start'] .mosaic[data-big='l'] :is(.s1, .s2) {
+    grid-column: 8 / span 5;
+  }
+  [data-align='end'] .mosaic[data-big='l'] .big {
+    grid-column: 6 / span 7;
+  }
+  [data-align='end'] .mosaic[data-big='l'] :is(.s1, .s2) {
+    grid-column: 1 / span 5;
+  }
+
+  [data-align='start'] .mosaic[data-big='p'] .big {
+    grid-column: 1 / span 5;
+  }
+  [data-align='start'] .mosaic[data-big='p'] :is(.s1, .s2) {
+    grid-column: 6 / span 7;
+  }
+  [data-align='end'] .mosaic[data-big='p'] .big {
+    grid-column: 8 / span 5;
+  }
+  [data-align='end'] .mosaic[data-big='p'] :is(.s1, .s2) {
+    grid-column: 1 / span 7;
+  }
+}
